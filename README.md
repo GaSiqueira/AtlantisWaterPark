@@ -4,7 +4,7 @@
 ```
   git clone https://github.com/GaSiqueira/AtlantisWaterPark.git .
 ```
-- Acesse a branch da atividade 2:
+- Acesse a branch da atividade 3:
 
 ```
   git checkout Atv3
