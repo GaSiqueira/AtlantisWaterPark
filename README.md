@@ -14,6 +14,10 @@
 ```
   npm install
 ```
+- acesse o caminho *AtlantisWaterPark/src/server* e digite o comando:
+```
+  node server.js
+```
 - Inicie a aplicação:
 ```
   npm start
