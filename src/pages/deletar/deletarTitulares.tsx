@@ -66,7 +66,7 @@ export default function DeletarTitulares(props: any){
                                     </ul>
                                 </div>
                                 <div>
-                                        <button className="input-group-text" onClick={()=>deletar(titular._id.toString())} style={{ background: red }}>Editar</button>
+                                        <button className="input-group-text" onClick={()=>deletar(titular._id.toString())} style={{ background: red }}>Deletar</button>
                                     </div>
                             </div>
                         </div>
