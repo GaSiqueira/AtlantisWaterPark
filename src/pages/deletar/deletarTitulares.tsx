@@ -1,147 +1,78 @@
+import { useState, useEffect } from "react";
+import { ObjectId } from 'mongodb';
+import axios from "axios";
+
 
 export default function DeletarTitulares(props: any){
     let tema = props.tema
     let red = "#fc6464"
+    const[titulares, setTitulares] = useState<Array<{_id: ObjectId, nome: string, nomeSocial: string, CPF: string, RG: string, telefone:string, acomodacao: string}>>([])
+
+    useEffect(()=>{
+        axios.get('http://localhost:3001/listar-titulares')
+         .then((response) =>{
+            setTitulares(response.data)
+         })
+         .catch((error)=>{
+            console.error(error)
+         })
+    }, [])
+
+    function deletar(id:string){
+        axios.delete(`http://localhost:3001/deletar-titular/${id}`)
+        .then((response)=>{
+            atualizar();
+            console.log(response);
+        })
+        .catch((error)=>{
+            console.error(error);
+        })
+    }
+
+    const atualizar = () =>{
+        axios.get('http://localhost:3001/listar-titulares')
+        .then((response) => {
+          setTitulares(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+
     return(
         <div className="container-fluid background">
             <div className="list-group">
-                <div className="accordion" id="accordionExample">
-                    <div className="accordion-item">
+                {titulares.map((titular, index)=>(
+                    <div className="accordion" id="accordionExample">
+                        <div className="accordion-item">
                         <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
-                                titular 1
+                            <button className="accordion-button collapsed" 
+                            type="button" 
+                            data-bs-toggle="collapse" 
+                            data-bs-target={`#collapseOne${index}`}  
+                            ria-expanded="true" 
+                            aria-controls={`collapseOne${index}`}>
+                                {titular.nome}
                             </button>
                         </h2>
-                        <div id="collapseOne1" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div className="accordion-body">
-                                <ul className="list-unstyled">
-                                    <li>Nome: nome do titular</li>
-                                    <li>CPF: CPF do titular</li>
-                                    <li>dependentes: 
-                                        <ul>
-                                            <li className="list-inline-item">dependente 1</li>
-                                            <li className="list-inline-item">dependente 2</li>
-                                            <li className="list-inline-item">dependente 3</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <div className="input-group mb-3">
-                                    <button className="input-group-text" style={{ background: red}} disabled >Deletar</button>
+                            <div id={`collapseOne${index}`} className="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                                <div className="accordion-body">
+                                    <ul className="list-unstyled">
+                                        <li>Nome: {titular.nome}</li>
+                                        <li>CPF: {titular.CPF}</li>
+                                        <li>RG: {titular.RG}</li>
+                                        <li>Telefone: {titular.telefone}</li>
+                                        <li>Acomodação: {titular.acomodacao}</li>
+                                    </ul>
                                 </div>
+                                <div>
+                                        <button className="input-group-text" onClick={()=>deletar(titular._id.toString())} style={{ background: red }}>Editar</button>
+                                    </div>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div className="accordion" id="accordionExample">
-                    <div className="accordion-item">
-                        <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">
-                                titular 2
-                            </button>
-                        </h2>
-                        <div id="collapseOne2" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div className="accordion-body">
-                                <ul className="list-unstyled">
-                                    <li>Nome: nome do titular</li>
-                                    <li>CPF: CPF do titular</li>
-                                    <li>dependentes: 
-                                        <ul>
-                                            <li className="list-inline-item">dependente 1</li>
-                                            <li className="list-inline-item">dependente 2</li>
-                                            <li className="list-inline-item">dependente 3</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <div className="input-group mb-3">
-                                    <button className="input-group-text" style={{ background: red}} disabled >Deletar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="accordion" id="accordionExample">
-                    <div className="accordion-item">
-                        <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3" aria-expanded="true" aria-controls="collapseOne3">
-                                titular 3
-                            </button>
-                        </h2>
-                        <div id="collapseOne3" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div className="accordion-body">
-                                <ul className="list-unstyled">
-                                    <li>Nome: nome do titular</li>
-                                    <li>CPF: CPF do titular</li>
-                                    <li>dependentes: 
-                                        <ul>
-                                            <li className="list-inline-item">dependente 1</li>
-                                            <li className="list-inline-item">dependente 2</li>
-                                            <li className="list-inline-item">dependente 3</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="accordion" id="accordionExample">
-                    <div className="accordion-item">
-                        <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne4" aria-expanded="true" aria-controls="collapseOne4">
-                                titular 4
-                            </button>
-                        </h2>
-                        <div id="collapseOne4" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div className="accordion-body">
-                                <ul className="list-unstyled">
-                                    <li>Nome: nome do titular</li>
-                                    <li>CPF: CPF do titular</li>
-                                    <li>dependentes: 
-                                        <ul>
-                                            <li className="list-inline-item">dependente 1</li>
-                                            <li className="list-inline-item">dependente 2</li>
-                                            <li className="list-inline-item">dependente 3</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <div className="input-group mb-3">
-                                    <button className="input-group-text" style={{ background: red}} disabled >Deletar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="accordion" id="accordionExample">
-                    <div className="accordion-item">
-                        <h2 className="accordion-header">
-                            <button className="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne5" aria-expanded="true" aria-controls="collapseOne5">
-                                titular 5
-                            </button>
-                        </h2>
-                        <div id="collapseOne5" className="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                            <div className="accordion-body">
-                                <ul className="list-unstyled">
-                                    <li>Nome: nome do titular</li>
-                                    <li>CPF: CPF do titular</li>
-                                    <li>dependentes: 
-                                        <ul>
-                                            <li className="list-inline-item">dependente 1</li>
-                                            <li className="list-inline-item">dependente 2</li>
-                                            <li className="list-inline-item">dependente 3</li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <div className="input-group mb-3">
-                                    <button className="input-group-text" style={{ background: red}} disabled >Deletar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                    ))}
             </div>
         </div>
-    )
+    );
 }

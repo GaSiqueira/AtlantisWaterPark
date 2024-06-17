@@ -69,7 +69,7 @@ export default class Roteador extends Component<{}, state>{
             return(
                 <>
                     {barraNavegacao}
-                    <ListarClientes tema="#04fafd"/>
+                    <ListarClientes/>
                 </>
             )
         }
